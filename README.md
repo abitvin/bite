@@ -1,2 +1,2 @@
-# bite
+# Readme
 Bite programming language
