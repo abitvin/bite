@@ -1,2 +1,2 @@
 # Readme
-Bite programming language
+Bite programming language.
