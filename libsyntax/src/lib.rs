@@ -1,5 +1,8 @@
 extern crate grammar;
 use grammar::{CompiledGrammar, Grammar, GrammarError};
+pub mod param;
+mod r#fn;
+mod r#struct;
 
 pub struct Parser{
     parser_grouped_7: CompiledGrammar<BoxedSeven>
@@ -37,16 +40,4 @@ fn parser_grouped_7(parser_7: CompiledGrammar<i32>) -> CompiledGrammar<BoxedSeve
     });
     g.rule("grouped", "\\(<seven>\\)");
     g.compile().unwrap()
-}
-
-pub fn add(left: usize, right: usize) -> usize {
-    left + right
-}
-
-pub fn mul(left: usize, right: usize) -> usize {
-    left * right
-}
-
-pub fn sub(left: usize, right: usize) -> usize {
-    left - right
 }
