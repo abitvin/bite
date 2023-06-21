@@ -29,7 +29,7 @@ fn scan_alphanumeric() {
 }
 
 #[test]
-fn scan_is_digit() {
+fn scan_digit() {
     let s = "139";
     let mut c = Scanner::new(s);
 
@@ -37,6 +37,26 @@ fn scan_is_digit() {
     assert_eq!(c.scan_digit(), Some('3'));
     assert_eq!(c.scan_digit(), Some('9'));
     assert_eq!(c.scan_digit(), None);
+}
+
+#[test]
+fn scan_digits() {
+    let s = "7";
+    let mut c = Scanner::new(s);
+
+    assert_eq!(c.scan_digits(), Some(String::from("7")));
+    assert_eq!(c.scan_digits(), None);
+
+    let s = "139";
+    let mut c = Scanner::new(s);
+
+    assert_eq!(c.scan_digits(), Some(String::from("139")));
+    assert_eq!(c.scan_digits(), None);
+
+    let s = "a";
+    let mut c = Scanner::new(s);
+
+    assert_eq!(c.scan_digits(), None);
 }
 
 #[test]

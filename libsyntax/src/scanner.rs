@@ -18,13 +18,9 @@ impl<'a> Scanner<'a> {
         for c0 in chars {
             let c1 = iter.next();
 
-            if let Some(c1) = c1 {
-                if c0 != c1 {
-                    return None;
-                }
-            }
-            else {
-                return None;
+            match c1 {
+                Some(c1) if c0 == c1 => continue,
+                _ => return None,
             }
         }
         
@@ -45,17 +41,24 @@ impl<'a> Scanner<'a> {
     }
 
     pub fn scan_digits(&mut self) -> Option<String> {
-        let chars = self.code.clone();
+        let mut s = String::new();
+        let mut chars = self.code.clone();
 
-        // for c in chars {
+        loop {
+            let c = chars.next();
 
-        // }
+            match c {
+                Some(c) if c.is_digit(10) => s += &String::from(c),
+                _ => break,
+            }
+        }
 
-        unimplemented!()
-    }
-
-    fn is_eof(&self) -> bool {
-        self.code.clone().next().is_none()
+        if s.len() == 0 {
+            return None;
+        }
+        
+        self.code = chars;
+        Some(s)
     }
 
     fn step_when(&mut self, condition: impl Fn(char) -> bool) -> Option<char> {
