@@ -1,10 +1,11 @@
 use crate::scanner::Scanner;
 
 pub fn parse_int(ctx: &mut Scanner) -> Option<String> {
-    let mut c = ctx.scan("-")
+    let c = ctx.scan("-")
         .unwrap_or(String::new());
 
-    unimplemented!()
+    let digits = ctx.scan_digits()?;
+    Some(c + &digits)
 }
 
 pub fn parse_id(ctx: &mut Scanner) -> Option<String> {
