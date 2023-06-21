@@ -62,19 +62,11 @@ impl<'a> Scanner<'a> {
     }
 
     pub fn scan_spaces(&mut self) -> bool {
-        let mut peek = self.code.clone().peekable();
-        let mut found = false;
+        self.skip_when(|c| c == ' ')
+    }
 
-        for c in peek {
-            if c != ' ' {
-                break;
-            }
-
-            self.code.next();
-            found = true;
-        }
-
-        found
+    pub fn scan_whitespaces(&mut self) -> bool {
+        self.skip_when(|c| c == ' ' || c == '\n' || c == '\r')
     }
 
     fn step_when(&mut self, condition: impl Fn(char) -> bool) -> Option<char> {
@@ -84,5 +76,21 @@ impl<'a> Scanner<'a> {
             true => self.code.next(),
             false => None,
         }
+    }
+
+    fn skip_when(&mut self, condition: impl Fn(char) -> bool) -> bool {
+        let mut peek = self.code.clone().peekable();
+        let mut found = false;
+
+        for c in peek {
+            if !condition(c) {
+                break;
+            }
+
+            self.code.next();
+            found = true;
+        }
+
+        found
     }
 }

@@ -103,3 +103,22 @@ fn scan_text() {
     assert_eq!(scn.scan(""), Some(String::from("")));
     assert_eq!(scn.scan("nope again"), None);
 }
+
+#[test]
+fn scan_whitespaces() {
+    let s = "";
+    let mut scn = Scanner::new(s);
+    assert!(!scn.scan_whitespaces());
+
+    let s = " ";
+    let mut scn = Scanner::new(s);
+    assert!(scn.scan_whitespaces());
+
+    let s = "\n";
+    let mut scn = Scanner::new(s);
+    assert!(scn.scan_whitespaces());
+
+    let s = "\r";
+    let mut scn = Scanner::new(s);
+    assert!(scn.scan_whitespaces());
+}
