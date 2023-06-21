@@ -61,6 +61,22 @@ impl<'a> Scanner<'a> {
         Some(s)
     }
 
+    pub fn scan_spaces(&mut self) -> bool {
+        let mut peek = self.code.clone().peekable();
+        let mut found = false;
+
+        for c in peek {
+            if c != ' ' {
+                break;
+            }
+
+            self.code.next();
+            found = true;
+        }
+
+        found
+    }
+
     fn step_when(&mut self, condition: impl Fn(char) -> bool) -> Option<char> {
         let peek = self.code.clone().peekable().next()?;
 
