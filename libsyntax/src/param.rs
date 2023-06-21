@@ -15,16 +15,12 @@ impl Param {
     }
 
     pub fn parse(mut scn: &mut Scanner) -> Option<Self> {
-        scn.scan("(")?;
-        scn.scan_spaces();
         let id = parse_id(&mut scn)?;
         scn.scan_spaces();
         scn.scan(":")?;
         scn.scan_spaces();
         let typ = parse_id(&mut scn)?;
-        scn.scan_spaces();
-        scn.scan(")")?;
-
+        
         Some(Self { id, typ })
     }
 }
