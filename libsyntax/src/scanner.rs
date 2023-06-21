@@ -12,22 +12,52 @@ impl<'a> Scanner<'a> {
     }
 
     pub fn scan(&mut self, value: &str) -> Option<String> {
-        value.chars()
-            .zip(&mut self.code)
-            .fold(Some(String::new()), |acc, (a, b)| {
-                acc.filter(|_| a == b).map(|s| s + &String::from(a))
-            })
+        if self.is_eof() {
+            return None;
+        }
+        
+        let mut iter = self.code.clone();
+        let chars = value.chars();
+        
+        for c0 in chars {
+            let c1 = iter.next();
+
+            if let Some(c1) = c1 {
+                if c0 != c1 {
+                    return None;
+                }
+            }
+            else {
+                return None;
+            }
+        }
+        
+        self.code = iter;
+        Some(String::from(value))
     }
 
     pub fn scan_alphabetic(&mut self) -> Option<char> {
-        self.code.next().filter(|x| x.is_alphabetic())
+        self.step_when(|c| c.is_alphabetic())
     }
 
     pub fn scan_alphanumeric(&mut self) -> Option<char> {
-        self.code.next().filter(|x| x.is_alphabetic() || x.is_digit(10))
+        self.step_when(|c| c.is_alphabetic() || c.is_digit(10))
     }
 
     pub fn scan_digit(&mut self) -> Option<char> {
-        self.code.next().filter(|x| x.is_digit(10))
+        self.step_when(|c| c.is_digit(10))
+    }
+
+    fn is_eof(&self) -> bool {
+        self.code.clone().next().is_none()
+    }
+
+    fn step_when(&mut self, condition: impl Fn(char) -> bool) -> Option<char> {
+        let peek = self.code.clone().peekable().next()?;
+
+        match condition(peek) {
+            true => self.code.next(),
+            false => None,
+        }
     }
 }

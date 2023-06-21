@@ -1,5 +1,12 @@
 use crate::scanner::Scanner;
 
+pub fn parse_int(ctx: &mut Scanner) -> Option<String> {
+    let mut c = ctx.scan("-")
+        .unwrap_or(String::new());
+
+    unimplemented!()
+}
+
 pub fn parse_id(ctx: &mut Scanner) -> Option<String> {
     let mut c = ctx.scan_alphabetic()
         .map(|c| String::from(c))?;
