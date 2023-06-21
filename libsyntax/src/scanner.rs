@@ -69,6 +69,17 @@ impl<'a> Scanner<'a> {
         self.skip_when(|c| c == ' ' || c == '\n' || c == '\r')
     }
 
+    pub fn skip(&mut self, char: char) -> bool {
+        self.skip_when(|c| c == char)
+    }
+
+    pub fn skip_newline(&mut self) -> bool {
+        match self.skip_range(0, 1, |c| c == '\r') {
+            1 => self.skip_range(0, 1, |c| c == '\n') <= 1,
+            _ => self.skip_range(0, 1, |c| c == '\n') == 1 && self.skip_range(0, 1, |c| c == '\r') == 0,
+        }
+    }
+
     fn step_when(&mut self, condition: impl Fn(char) -> bool) -> Option<char> {
         let peek = self.code.clone().peekable().next()?;
 
@@ -78,11 +89,38 @@ impl<'a> Scanner<'a> {
         }
     }
 
+    fn skip_range(&mut self, min: usize, max: usize, condition: impl Fn(char) -> bool) -> usize {
+        let chars = self.code.clone();
+        let mut found = 0;
+
+        for c in chars {
+            if !condition(c) {
+                break;
+            }
+
+            found += 1;
+
+            if found == max {
+                break;
+            }
+        }
+
+        if found < min || found > max {
+            return 0;
+        }
+
+        if found > 0 {
+            self.code.nth(found - 1);
+        }
+
+        found
+    }
+
     fn skip_when(&mut self, condition: impl Fn(char) -> bool) -> bool {
-        let mut peek = self.code.clone().peekable();
+        let chars = self.code.clone();
         let mut found = false;
 
-        for c in peek {
+        for c in chars {
             if !condition(c) {
                 break;
             }

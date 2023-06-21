@@ -122,3 +122,41 @@ fn scan_whitespaces() {
     let mut scn = Scanner::new(s);
     assert!(scn.scan_whitespaces());
 }
+
+#[test]
+fn skip() {
+    let s = "123";
+    let mut scn = Scanner::new(s);
+    assert!(scn.skip('1'));
+    assert!(scn.skip('2'));
+    assert!(!scn.skip('-'));
+    assert!(scn.skip('3'));
+    assert!(!scn.skip('-'));
+}
+
+#[test]
+fn skip_newline() {
+    let s = "a";
+    let mut scn = Scanner::new(s);
+    assert!(!scn.skip_newline());
+
+    let s = " ";
+    let mut scn = Scanner::new(s);
+    assert!(!scn.skip_newline());
+
+    let s = "\r";
+    let mut scn = Scanner::new(s);
+    assert!(scn.skip_newline());
+
+    let s = "\r\n";
+    let mut scn = Scanner::new(s);
+    assert!(scn.skip_newline());
+
+    let s = "\n";
+    let mut scn = Scanner::new(s);
+    assert!(scn.skip_newline());
+
+    let s = "\n\r";     
+    let mut scn = Scanner::new(s);
+    assert!(!scn.skip_newline());
+}
