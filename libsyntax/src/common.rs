@@ -1,19 +1,19 @@
 use crate::scanner::Scanner;
 
-pub fn parse_int(ctx: &mut Scanner) -> Option<String> {
-    let c = ctx.scan("-")
+pub fn parse_int(scn: &mut Scanner) -> Option<String> {
+    let c = scn.scan("-")
         .unwrap_or(String::new());
 
-    let digits = ctx.scan_digits()?;
+    let digits = scn.scan_digits()?;
     Some(c + &digits)
 }
 
-pub fn parse_id(ctx: &mut Scanner) -> Option<String> {
-    let mut c = ctx.scan_alphabetic()
+pub fn parse_id(scn: &mut Scanner) -> Option<String> {
+    let mut c = scn.scan_alphabetic()
         .map(|c| String::from(c))?;
     
     loop {
-        let c2 = ctx.scan_alphanumeric();
+        let c2 = scn.scan_alphanumeric();
         
         if let Some(c2) = c2 {
             c = c + &String::from(c2);
