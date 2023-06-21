@@ -1,5 +1,5 @@
 extern crate libsyntax;
-use libsyntax::{id::parse_id, scanner::Scanner};
+use libsyntax::{common::parse_id, scanner::Scanner};
 
 #[test]
 fn test_parse_id() {
