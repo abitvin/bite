@@ -68,5 +68,7 @@ fn scan_text() {
     assert_eq!(c.scan("+"), Some(String::from("+")));
     assert_eq!(c.scan("nope"), None);
     assert_eq!(c.scan("ham"), Some(String::from("ham")));
-    assert_eq!(c.scan(""), None);
+    assert_eq!(c.scan(""), Some(String::from("")));
+    assert_eq!(c.scan(""), Some(String::from("")));
+    assert_eq!(c.scan("nope again"), None);
 }

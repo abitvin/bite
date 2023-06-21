@@ -12,10 +12,6 @@ impl<'a> Scanner<'a> {
     }
 
     pub fn scan(&mut self, value: &str) -> Option<String> {
-        if self.is_eof() {
-            return None;
-        }
-        
         let mut iter = self.code.clone();
         let chars = value.chars();
         
@@ -46,6 +42,16 @@ impl<'a> Scanner<'a> {
 
     pub fn scan_digit(&mut self) -> Option<char> {
         self.step_when(|c| c.is_digit(10))
+    }
+
+    pub fn scan_digits(&mut self) -> Option<String> {
+        let chars = self.code.clone();
+
+        // for c in chars {
+
+        // }
+
+        unimplemented!()
     }
 
     fn is_eof(&self) -> bool {
