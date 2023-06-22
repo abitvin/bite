@@ -78,17 +78,6 @@ fn scan_progress() {
 }
 
 #[test]
-fn scan_spaces() {
-    let s = "";
-    let mut scn = Scanner::new(s);
-    assert!(!scn.scan_spaces());
-
-    let s = " ";
-    let mut scn = Scanner::new(s);
-    assert!(scn.scan_spaces());
-}
-
-#[test]
 fn scan_text() {
     let s = "cheese+ham";
     let mut scn = Scanner::new(s);
@@ -101,25 +90,6 @@ fn scan_text() {
     assert_eq!(scn.scan(""), Some(String::from("")));
     assert_eq!(scn.scan(""), Some(String::from("")));
     assert_eq!(scn.scan("nope again"), None);
-}
-
-#[test]
-fn scan_whitespaces() {
-    let s = "";
-    let mut scn = Scanner::new(s);
-    assert!(!scn.scan_whitespaces());
-
-    let s = " ";
-    let mut scn = Scanner::new(s);
-    assert!(scn.scan_whitespaces());
-
-    let s = "\n";
-    let mut scn = Scanner::new(s);
-    assert!(scn.scan_whitespaces());
-
-    let s = "\r";
-    let mut scn = Scanner::new(s);
-    assert!(scn.scan_whitespaces());
 }
 
 #[test]
@@ -158,4 +128,34 @@ fn skip_newline() {
     let s = "\n\r";     
     let mut scn = Scanner::new(s);
     assert!(!scn.skip_newline());
+}
+
+#[test]
+fn skip_spaces() {
+    let s = "";
+    let mut scn = Scanner::new(s);
+    assert!(!scn.skip_spaces());
+
+    let s = " ";
+    let mut scn = Scanner::new(s);
+    assert!(scn.skip_spaces());
+}
+
+#[test]
+fn skip_whitespaces() {
+    let s = "";
+    let mut scn = Scanner::new(s);
+    assert!(!scn.skip_whitespaces());
+
+    let s = " ";
+    let mut scn = Scanner::new(s);
+    assert!(scn.skip_whitespaces());
+
+    let s = "\n";
+    let mut scn = Scanner::new(s);
+    assert!(scn.skip_whitespaces());
+
+    let s = "\r";
+    let mut scn = Scanner::new(s);
+    assert!(scn.skip_whitespaces());
 }

@@ -14,18 +14,18 @@ impl FnDecl {
 
     pub fn parse(mut scn: &mut Scanner) -> Option<Self> {
         let id = parse_id(&mut scn)?;
-        scn.scan_spaces();
+        scn.skip_spaces();
         scn.scan(":")?;
-        scn.scan_spaces();
+        scn.skip_spaces();
         let params = parse_params(&mut scn)?;
-        scn.scan_spaces();
+        scn.skip_spaces();
         scn.scan("->")?;
-        scn.scan_spaces();
+        scn.skip_spaces();
         let ret_type = parse_id(&mut scn)?;
-        scn.scan_spaces();
+        scn.skip_spaces();
         scn.skip_newline();
         scn.scan(".")?;
-        scn.scan_spaces();
+        scn.skip_spaces();
         scn.skip_newline();
 
         Some(Self { id, params, ret_type })
@@ -35,23 +35,23 @@ impl FnDecl {
 
 fn parse_params(mut scn: &mut Scanner) -> Option<Vec<Param>> {
     scn.scan("(")?;
-    scn.scan_spaces();
+    scn.skip_spaces();
 
     let mut params = Param::parse(scn)
         .map(|x| vec![x])?;
 
     loop {
-        scn.scan_spaces();
+        scn.skip_spaces();
         
         if !scn.skip(',') {
             break;
         }
 
-        scn.scan_spaces();
+        scn.skip_spaces();
         params.push(Param::parse(scn)?);
     }
 
-    scn.scan_spaces();
+    scn.skip_spaces();
     scn.scan(")")?;
 
     Some(params)

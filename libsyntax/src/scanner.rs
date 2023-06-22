@@ -61,14 +61,6 @@ impl<'a> Scanner<'a> {
         Some(s)
     }
 
-    pub fn scan_spaces(&mut self) -> bool {
-        self.skip_when(|c| c == ' ')
-    }
-
-    pub fn scan_whitespaces(&mut self) -> bool {
-        self.skip_when(|c| c == ' ' || c == '\n' || c == '\r')
-    }
-
     pub fn skip(&mut self, char: char) -> bool {
         self.skip_when(|c| c == char)
     }
@@ -78,6 +70,14 @@ impl<'a> Scanner<'a> {
             1 => self.skip_range(0, 1, |c| c == '\n') <= 1,
             _ => self.skip_range(0, 1, |c| c == '\n') == 1 && self.skip_range(0, 1, |c| c == '\r') == 0,
         }
+    }
+
+    pub fn skip_spaces(&mut self) -> bool {
+        self.skip_when(|c| c == ' ')
+    }
+
+    pub fn skip_whitespaces(&mut self) -> bool {
+        self.skip_when(|c| c == ' ' || c == '\n' || c == '\r')
     }
 
     fn step_when(&mut self, condition: impl Fn(char) -> bool) -> Option<char> {

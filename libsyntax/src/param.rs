@@ -16,9 +16,9 @@ impl Param {
 
     pub fn parse(mut scn: &mut Scanner) -> Option<Self> {
         let id = parse_id(&mut scn)?;
-        scn.scan_spaces();
+        scn.skip_spaces();
         scn.scan(":")?;
-        scn.scan_spaces();
+        scn.skip_spaces();
         let typ = parse_id(&mut scn)?;
         
         Some(Self { id, typ })
