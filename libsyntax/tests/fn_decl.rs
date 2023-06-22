@@ -1,4 +1,4 @@
-use libsyntax::{r#fn::FnDecl, param::Param, scanner::Scanner};
+use libsyntax::{fn_decl::FnDecl, param::Param, scanner::Scanner};
 
 #[test]
 fn parse_fn() {
