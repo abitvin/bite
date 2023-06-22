@@ -1,5 +1,6 @@
 use std::str::Chars;
 
+#[derive(Clone)]
 pub struct Scanner<'a> {
     code: Chars<'a>,
 }
@@ -78,6 +79,10 @@ impl<'a> Scanner<'a> {
 
     pub fn skip_whitespaces(&mut self) -> bool {
         self.skip_when(|c| c == ' ' || c == '\n' || c == '\r')
+    }
+
+    pub fn replace(&mut self, other: Scanner<'a>) {
+        self.code = other.code;
     }
 
     fn step_when(&mut self, condition: impl Fn(char) -> bool) -> Option<char> {
