@@ -7,6 +7,6 @@ pub enum Stmt {
 
 impl Stmt {
     pub fn parse(scn: &mut Scanner) -> Option<Stmt> {
-        VarDecl::parse(scn).map(|v| Stmt::VarDecl(v))
+        VarDecl::parse(scn).map(Stmt::VarDecl)
     }
 }
