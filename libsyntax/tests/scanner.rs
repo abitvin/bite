@@ -1,4 +1,3 @@
-extern crate libsyntax;
 use libsyntax::scanner::Scanner;
 
 #[test]

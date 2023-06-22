@@ -1,4 +1,3 @@
-extern crate libsyntax;
 use libsyntax::{common::{parse_id, parse_int}, scanner::Scanner};
 
 #[test]
