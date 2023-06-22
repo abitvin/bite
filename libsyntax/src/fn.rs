@@ -33,7 +33,7 @@ impl FnDecl {
 
 }
 
-fn parse_params(mut scn: &mut Scanner) -> Option<Vec<Param>> {
+fn parse_params(scn: &mut Scanner) -> Option<Vec<Param>> {
     scn.scan("(")?;
     scn.skip_spaces();
 
