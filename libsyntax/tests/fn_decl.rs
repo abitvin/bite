@@ -2,6 +2,15 @@ use libsyntax::{fn_decl::FnDecl, param::Param, scanner::Scanner, stmt::Stmt, var
 
 #[test]
 fn parse_fn() {
+    let code = "main : () -> void
+                      .";
+
+    let mut scn = Scanner::new(code);
+    assert_eq!(FnDecl::parse(&mut scn), Some(FnDecl::new("main", vec![], "void", None)));
+}
+
+#[test]
+fn parse_fn_with_params() {
     let code = "add : ( a : i32 , b : i32 ) -> i32
                       .";
 
