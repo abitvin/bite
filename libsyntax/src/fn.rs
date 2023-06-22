@@ -12,16 +12,16 @@ impl FnDecl {
         Self { id: id.into(), params, ret_type: ret_type.into() }
     }
 
-    pub fn parse(mut scn: &mut Scanner) -> Option<Self> {
-        let id = parse_id(&mut scn)?;
+    pub fn parse(scn: &mut Scanner) -> Option<Self> {
+        let id = parse_id(scn)?;
         scn.skip_spaces();
         scn.scan(":")?;
         scn.skip_spaces();
-        let params = parse_params(&mut scn)?;
+        let params = parse_params(scn)?;
         scn.skip_spaces();
         scn.scan("->")?;
         scn.skip_spaces();
-        let ret_type = parse_id(&mut scn)?;
+        let ret_type = parse_id(scn)?;
         scn.skip_spaces();
         scn.skip_newline();
         scn.scan(".")?;

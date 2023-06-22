@@ -10,7 +10,7 @@ pub fn parse_int(scn: &mut Scanner) -> Option<String> {
 
 pub fn parse_id(scn: &mut Scanner) -> Option<String> {
     let mut c = scn.scan_alphabetic()
-        .map(|c| String::from(c))?;
+        .map(String::from)?;
     
     loop {
         let c2 = scn.scan_alphanumeric();

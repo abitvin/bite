@@ -29,15 +29,15 @@ impl<'a> Scanner<'a> {
     }
 
     pub fn scan_alphabetic(&mut self) -> Option<char> {
-        self.step_when(|c| c.is_alphabetic())
+        self.step_when(|c| c.is_ascii_alphabetic())
     }
 
     pub fn scan_alphanumeric(&mut self) -> Option<char> {
-        self.step_when(|c| c.is_alphabetic() || c.is_digit(10))
+        self.step_when(|c| c.is_ascii_alphanumeric())
     }
 
     pub fn scan_digit(&mut self) -> Option<char> {
-        self.step_when(|c| c.is_digit(10))
+        self.step_when(|c| c.is_ascii_digit())
     }
 
     pub fn scan_digits(&mut self) -> Option<String> {
@@ -48,12 +48,12 @@ impl<'a> Scanner<'a> {
             let c = chars.next();
 
             match c {
-                Some(c) if c.is_digit(10) => s += &String::from(c),
+                Some(c) if c.is_ascii_digit() => s += &String::from(c),
                 _ => break,
             }
         }
 
-        if s.len() == 0 {
+        if s.is_empty() {
             return None;
         }
         
