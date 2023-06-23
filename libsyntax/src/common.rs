@@ -25,3 +25,13 @@ pub fn parse_id(scn: &mut Scanner) -> Option<String> {
     
     Some(c)
 }
+
+pub fn parse_two_ids(scn: &mut Scanner) -> Option<(String, String)> {
+    let id = parse_id(scn)?;
+    scn.skip_spaces();
+    scn.scan(":")?;
+    scn.skip_spaces();
+    let typ = parse_id(scn)?;
+    
+    Some((id, typ ))
+}

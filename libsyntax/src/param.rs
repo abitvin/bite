@@ -1,4 +1,4 @@
-use crate::{scanner::Scanner, common::parse_id};
+use crate::{common::parse_two_ids, scanner::Scanner};
 
 #[derive(Debug, PartialEq)]
 pub struct Param {
@@ -15,12 +15,6 @@ impl Param {
     }
 
     pub fn parse(scn: &mut Scanner) -> Option<Self> {
-        let id = parse_id(scn)?;
-        scn.skip_spaces();
-        scn.scan(":")?;
-        scn.skip_spaces();
-        let typ = parse_id(scn)?;
-        
-        Some(Self { id, typ })
+        parse_two_ids(scn).map(|(id, typ)| Self { id, typ })
     }
 }
