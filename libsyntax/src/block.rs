@@ -3,9 +3,15 @@ use crate::{stmt::Stmt, scanner::Scanner};
 #[derive(Debug, PartialEq)]
 pub struct Block(Vec<Stmt>);
 
-impl Into<Block> for Vec<Stmt> {
-    fn into(self) -> Block {
-        Block(self)
+impl From<Vec<Stmt>> for Block {
+    fn from(val: Vec<Stmt>) -> Self {
+        Block(val)
+    }
+}
+
+impl Default for Block {
+    fn default() -> Self {
+        Self::new()
     }
 }
 
