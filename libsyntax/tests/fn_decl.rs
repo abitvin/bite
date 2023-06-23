@@ -1,4 +1,4 @@
-use libsyntax::{fn_decl::FnDecl, param::Param, scanner::Scanner, stmt::Stmt, var_decl::VarDecl};
+use libsyntax::{block::Block, fn_decl::FnDecl, param::Param, scanner::Scanner, stmt::Stmt, var_decl::VarDecl};
 
 #[test]
 fn parse_fn() {
@@ -6,7 +6,7 @@ fn parse_fn() {
                       .";
 
     let mut scn = Scanner::new(code);
-    assert_eq!(FnDecl::parse(&mut scn), Some(FnDecl::new("main", vec![], "void", None)));
+    assert_eq!(FnDecl::parse(&mut scn), Some(FnDecl::new("main", vec![], "void", Block::new())));
 }
 
 #[test]
@@ -17,7 +17,7 @@ fn parse_fn_with_params() {
     let params = vec![Param::new("a", "i32"), Param::new("b", "i32")];
     
     let mut scn = Scanner::new(code);
-    assert_eq!(FnDecl::parse(&mut scn), Some(FnDecl::new("add", params, "i32", None)));
+    assert_eq!(FnDecl::parse(&mut scn), Some(FnDecl::new("add", params, "i32", Block::new())));
 }
 
 #[test]
@@ -34,5 +34,5 @@ fn parse_fn_with_var_decls() {
     ];
     
     let mut scn = Scanner::new(code);
-    assert_eq!(FnDecl::parse(&mut scn), Some(FnDecl::new("eat", params, "void", Some(stmts))));
+    assert_eq!(FnDecl::parse(&mut scn), Some(FnDecl::new("eat", params, "void", stmts)));
 }
