@@ -12,7 +12,7 @@ impl<'a> Scanner<'a> {
         }
     }
 
-    pub fn scan(&mut self, value: &str) -> Option<String> {
+    pub fn has(&mut self, value: &str) -> bool {
         let mut iter = self.code.clone();
         let chars = value.chars();
         
@@ -21,12 +21,21 @@ impl<'a> Scanner<'a> {
 
             match c1 {
                 Some(c1) if c0 == c1 => continue,
-                _ => return None,
+                _ => return false,
             }
         }
         
         self.code = iter;
-        Some(String::from(value))
+        true
+    }
+
+    pub fn scan(&mut self, value: &str) -> Option<String> {
+        if self.has(value) {
+            Some(String::from(value))
+        }
+        else {
+            None
+        }
     }
 
     pub fn scan_alphabetic(&mut self) -> Option<char> {
@@ -74,11 +83,11 @@ impl<'a> Scanner<'a> {
     }
 
     pub fn skip_spaces(&mut self) -> bool {
-        self.skip_when(|c| c == ' ')
+        self.skip_when(|c| c == ' ' || c == '\t')
     }
 
     pub fn skip_whitespaces(&mut self) -> bool {
-        self.skip_when(|c| c == ' ' || c == '\n' || c == '\r')
+        self.skip_when(|c| c == ' ' || c == '\t' || c == '\n' || c == '\r')
     }
 
     pub fn replace(&mut self, other: Scanner<'a>) {

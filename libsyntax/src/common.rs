@@ -1,5 +1,19 @@
 use crate::scanner::Scanner;
 
+pub fn parse_bool(scn: &mut Scanner) -> Option<bool> {
+    let mut try_scn = scn.clone();
+    
+    if try_scn.scan("true").is_some() {
+        scn.replace(try_scn);
+        Some(true)
+    } else if try_scn.scan("false").is_some() { 
+        scn.replace(try_scn);
+        Some(false)
+    } else {
+        None
+    }
+}
+
 pub fn parse_int(scn: &mut Scanner) -> Option<String> {
     let c = scn.scan("-")
         .unwrap_or(String::new());

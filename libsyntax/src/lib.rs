@@ -1,6 +1,7 @@
 pub mod block;
 pub mod common;
 pub mod fn_decl;
+pub mod r#if;
 pub mod param;
 pub mod prop;
 pub mod scanner;
