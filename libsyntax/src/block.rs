@@ -11,13 +11,13 @@ impl From<Vec<Stmt>> for Block {
 
 impl Default for Block {
     fn default() -> Self {
-        Self::new()
+        Self::new(vec![])
     }
 }
 
 impl Block {
-    pub fn new() -> Self {
-        Self(vec![])
+    pub fn new(stmts: Vec<Stmt>) -> Self {
+        Self(stmts)
     }
 
     pub fn parse(scn: &mut Scanner) -> Option<Block> {

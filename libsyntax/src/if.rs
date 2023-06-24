@@ -12,7 +12,7 @@ impl If {
         Self { 
             if_block: (if_block.0, if_block.1.into()),
             elif_blocks,
-            else_block: else_block.map(|b| b.into()),
+            else_block,
         }
     }
 

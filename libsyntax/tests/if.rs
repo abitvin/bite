@@ -32,46 +32,43 @@ fn parse_empty_elif_block() {
                    elif true
                    .";
     let mut scn = Scanner::new(s);
-    let iff = If::new((true, vec![]), vec![(true, Block::new())], None);
+    let iff = If::new((true, vec![]), vec![(true, Block::default())], None);
     assert_eq!(If::parse(&mut scn), Some(iff))
 }
 
 #[test]
 fn parse_populated_elif_block() {
-    unimplemented!()
-    // let s = "if true
-    //                elif true
-    //                     a = 567
-    //                .";
-    // let mut scn = Scanner::new(s);
-    // let elif_blocks = vec![
-    //     (true, Block::new())
-    // ];
-    // let iff = If::new((true, vec![]), elif_blocks, None);
-    // assert_eq!(If::parse(&mut scn), Some(iff))
+    let s = "if true
+                   elif true
+                        a = 567
+                   .";
+    let mut scn = Scanner::new(s);
+    let elif_blocks = vec![
+        (true, Block::new(vec![Stmt::VarDecl(VarDecl::new("a", None, "567"))]))
+    ];
+    let iff = If::new((true, vec![]), elif_blocks, None);
+    assert_eq!(If::parse(&mut scn), Some(iff))
 }
 
 #[test]
 fn parse_empty_else_block() {
-    unimplemented!()
-    // let s = "if true
-    //                elif true
-    //                else
-    //                .";
-    // let mut scn = Scanner::new(s);
-    // let iff = If::new((true, vec![]), vec![], None);
-    // assert_eq!(If::parse(&mut scn), Some(iff))
+    let s = "if true
+                   else
+                   .";
+    let mut scn = Scanner::new(s);
+    let else_block = Block::new(vec![]);
+    let iff = If::new((true, vec![]), vec![], Some(else_block));
+    assert_eq!(If::parse(&mut scn), Some(iff))
 }
 
 #[test]
 fn parse_populated_else_block() {
-    unimplemented!()
-    // let s = "if true
-    //                elif true
-    //                else
-    //                     cheese = 100
-    //                .";
-    // let mut scn = Scanner::new(s);
-    // let iff = If::new((true, vec![]), vec![], None);
-    // assert_eq!(If::parse(&mut scn), Some(iff))
+    let s = "if true
+                   else
+                        cheese = 100
+                   .";
+    let mut scn = Scanner::new(s);
+    let else_block = Block::new(vec![Stmt::VarDecl(VarDecl::new("cheese", None, "100"))]);
+    let iff = If::new((true, vec![]), vec![], Some(else_block));
+    assert_eq!(If::parse(&mut scn), Some(iff))
 }

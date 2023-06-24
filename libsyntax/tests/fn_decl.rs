@@ -6,7 +6,7 @@ fn parse_fn() {
                       .";
 
     let mut scn = Scanner::new(code);
-    assert_eq!(FnDecl::parse(&mut scn), Some(FnDecl::new("main", vec![], "void", Block::new())));
+    assert_eq!(FnDecl::parse(&mut scn), Some(FnDecl::new("main", vec![], "void", Block::default())));
 }
 
 #[test]
@@ -17,7 +17,7 @@ fn parse_fn_with_params() {
     let params = vec![Param::new("a", "i32"), Param::new("b", "i32")];
     
     let mut scn = Scanner::new(code);
-    assert_eq!(FnDecl::parse(&mut scn), Some(FnDecl::new("add", params, "i32", Block::new())));
+    assert_eq!(FnDecl::parse(&mut scn), Some(FnDecl::new("add", params, "i32", Block::default())));
 }
 
 #[test]
