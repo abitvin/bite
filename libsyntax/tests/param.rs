@@ -1,7 +1,5 @@
-use libsyntax::{
-    param::Param,
-    scanner::{Parse, Scanner},
-};
+use libast::param::Param;
+use libsyntax::scanner::{Parse, Scanner};
 
 #[test]
 fn parse_param() {

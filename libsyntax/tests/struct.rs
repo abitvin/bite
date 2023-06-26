@@ -1,4 +1,5 @@
-use libsyntax::{scanner::{Parse, Scanner}, r#struct::Struct, prop::Prop};
+use libast::{r#struct::Struct, prop::Prop};
+use libsyntax::scanner::{Parse, Scanner};
 
 #[test]
 fn parse_empty_struct() {

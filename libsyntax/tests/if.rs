@@ -1,4 +1,5 @@
-use libsyntax::{scanner::{Parse, Scanner}, r#if::If, stmt::Stmt, var_decl::VarDecl, block::Block};
+use libast::{r#if::If, stmt::Stmt, var_decl::VarDecl, block::Block};
+use libsyntax::scanner::{Parse, Scanner};
 
 #[test]
 fn parse_empty_if_block() {

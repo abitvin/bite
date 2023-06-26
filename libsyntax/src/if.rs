@@ -1,21 +1,5 @@
-use crate::{block::Block, common::parse_bool, scanner::{Parse, Scanner}};
-
-#[derive(Debug, PartialEq)]
-pub struct If {
-    if_block: (bool, Block),
-    elif_blocks: Vec<(bool, Block)>,
-    else_block: Option<Block> 
-}
-
-impl If {
-    pub fn new(if_block: (bool, impl Into<Block>), elif_blocks: Vec<(bool, Block)>, else_block: Option<Block>) -> Self {
-        Self { 
-            if_block: (if_block.0, if_block.1.into()),
-            elif_blocks,
-            else_block,
-        }
-    }
-}
+use crate::{common::parse_bool, scanner::{Parse, Scanner}};
+use libast::{block::Block, r#if::If};
 
 impl Parse for If {
     type Item = Self;
@@ -66,6 +50,6 @@ impl Parse for If {
         scn.skip_spaces();
         scn.scan(".")?;
         
-        Some(Self { if_block, elif_blocks, else_block })
+        Some(Self::new(if_block, elif_blocks, else_block))
     }
 }

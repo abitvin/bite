@@ -1,16 +1,5 @@
-use crate::{common::parse_id, prop::Prop, scanner::{Parse, Scanner}};
-
-#[derive(Debug, PartialEq)]
-pub struct Struct {
-    id: String,
-    props: Vec<Prop>,
-}
-
-impl Struct {
-    pub fn new(id: impl Into<String>, props: Vec<Prop>) -> Self {
-        Self { id: id.into(), props }
-    }
-}
+use crate::{common::parse_id, scanner::{Parse, Scanner}};
+use libast::{prop::Prop, r#struct::Struct};
 
 impl Parse for Struct {
     type Item = Self;
@@ -42,7 +31,7 @@ impl Parse for Struct {
         scn.skip_spaces();
         scn.scan(".")?;
         
-        Some(Self { id, props })
+        Some(Self::new(id, props))
     }
 }
 

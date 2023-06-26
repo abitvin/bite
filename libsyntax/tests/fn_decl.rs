@@ -1,4 +1,5 @@
-use libsyntax::{block::Block, fn_decl::FnDecl, param::Param, scanner::{Parse, Scanner}, stmt::Stmt, var_decl::VarDecl};
+use libast::{block::Block, fn_decl::FnDecl, param::Param, stmt::Stmt, var_decl::VarDecl};
+use libsyntax::scanner::{Parse, Scanner};
 
 #[test]
 fn parse_fn() {

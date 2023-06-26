@@ -1,23 +1,5 @@
-use crate::{block::Block, common::parse_id, param::Param, scanner::{Parse, Scanner}};
-
-#[derive(Debug, PartialEq)]
-pub struct FnDecl {
-    id: String,
-    params: Vec<Param>,
-    ret_type: String,
-    block: Block,
-}
-
-impl FnDecl {
-    pub fn new(id: impl Into<String>, params: Vec<Param>, ret_type: impl Into<String>, block: impl Into<Block>) -> Self {
-        Self { 
-            id: id.into(), 
-            params, ret_type: 
-            ret_type.into(), 
-            block: block.into(),
-        }
-    }
-}
+use crate::{common::parse_id, scanner::{Parse, Scanner}};
+use libast::{block::Block, fn_decl::FnDecl, param::Param};
 
 impl Parse for FnDecl {
     type Item = Self;
@@ -38,7 +20,7 @@ impl Parse for FnDecl {
         scn.skip_spaces();
         scn.scan(".")?;
         
-        Some(Self { id, params, ret_type, block })
+        Some(Self::new(id, params, ret_type, block))
     }
 }
 
