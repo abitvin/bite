@@ -30,8 +30,8 @@ fn parse_fn_with_var_decls() {
 
     let params = vec![Param::new("cheese", "Cheese")];
     let stmts = vec![
-        Stmt::VarDecl(VarDecl::new("c", None, "123")),
-        Stmt::VarDecl(VarDecl::new("d", None, "456"))
+        Stmt::new_var_decl("c", None, "123"),
+        Stmt::new_var_decl("d", None, "456")
     ];
     
     let mut scn = Scanner::new(code);
