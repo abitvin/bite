@@ -1,4 +1,4 @@
-use crate::{block::Block, common::parse_bool, scanner::Scanner};
+use crate::{block::Block, common::parse_bool, scanner::{Parse, Scanner}};
 
 #[derive(Debug, PartialEq)]
 pub struct If {
@@ -15,8 +15,12 @@ impl If {
             else_block,
         }
     }
+}
 
-    pub fn parse(scn: &mut Scanner) -> Option<Self> {
+impl Parse for If {
+    type Item = Self;
+    
+    fn parse(scn: &mut Scanner) -> Option<Self> {
         if !scn.has("if") {
             return None;
         }

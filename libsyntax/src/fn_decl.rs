@@ -1,4 +1,4 @@
-use crate::{block::Block, common::parse_id, param::Param, scanner::Scanner};
+use crate::{block::Block, common::parse_id, param::Param, scanner::{Parse, Scanner}};
 
 #[derive(Debug, PartialEq)]
 pub struct FnDecl {
@@ -17,8 +17,12 @@ impl FnDecl {
             block: block.into(),
         }
     }
+}
 
-    pub fn parse(scn: &mut Scanner) -> Option<Self> {
+impl Parse for FnDecl {
+    type Item = Self;
+
+    fn parse(scn: &mut Scanner) -> Option<Self> {
         let id = parse_id(scn)?;
         scn.skip_spaces();
         scn.scan(":")?;
@@ -36,7 +40,6 @@ impl FnDecl {
         
         Some(Self { id, params, ret_type, block })
     }
-
 }
 
 fn parse_params(scn: &mut Scanner) -> Option<Vec<Param>> {

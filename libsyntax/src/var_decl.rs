@@ -1,4 +1,4 @@
-use crate::{scanner::Scanner, common::{parse_id, parse_int}};
+use crate::{scanner::{Parse, Scanner}, common::{parse_id, parse_int}};
 
 #[derive(Debug, PartialEq)]
 pub struct VarDecl {
@@ -11,8 +11,12 @@ impl VarDecl {
     pub fn new(id: impl Into<String>, typ: Option<String>, expr: impl Into<String>) -> Self {
         Self { id: id.into(), typ, expr: expr.into() }
     }
+}
 
-    pub fn parse(scn: &mut Scanner) -> Option<Self> {
+impl Parse for VarDecl {
+    type Item = Self;
+    
+    fn parse(scn: &mut Scanner) -> Option<Self> {
         let id = parse_id(scn)?;
         scn.skip_spaces();
 

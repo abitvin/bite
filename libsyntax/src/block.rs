@@ -1,4 +1,4 @@
-use crate::{stmt::Stmt, scanner::Scanner};
+use crate::{stmt::Stmt, scanner::{Parse, Scanner}};
 
 #[derive(Debug, PartialEq)]
 pub struct Block(Vec<Stmt>);
@@ -19,8 +19,12 @@ impl Block {
     pub fn new(stmts: Vec<Stmt>) -> Self {
         Self(stmts)
     }
+}
 
-    pub fn parse(scn: &mut Scanner) -> Option<Block> {
+impl Parse for Block {
+    type Item = Self;
+    
+    fn parse(scn: &mut Scanner) -> Option<Block> {
         let mut stmts = vec![];
 
         loop {

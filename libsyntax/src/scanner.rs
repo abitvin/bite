@@ -1,5 +1,10 @@
 use std::str::Chars;
 
+pub trait Parse {
+    type Item;
+    fn parse(scn: &mut Scanner) -> Option<Self::Item>;
+}
+
 #[derive(Clone)]
 pub struct Scanner<'a> {
     code: Chars<'a>,

@@ -1,4 +1,4 @@
-use crate::{common::parse_id, prop::Prop, scanner::Scanner};
+use crate::{common::parse_id, prop::Prop, scanner::{Parse, Scanner}};
 
 #[derive(Debug, PartialEq)]
 pub struct Struct {
@@ -10,8 +10,12 @@ impl Struct {
     pub fn new(id: impl Into<String>, props: Vec<Prop>) -> Self {
         Self { id: id.into(), props }
     }
+}
 
-    pub fn parse(scn: &mut Scanner) -> Option<Self> {
+impl Parse for Struct {
+    type Item = Self;
+    
+    fn parse(scn: &mut Scanner) -> Option<Self> {
         let id = parse_id(scn)?;
         scn.skip_spaces();
         scn.scan(":")?;

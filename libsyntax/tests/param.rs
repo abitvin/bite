@@ -1,6 +1,6 @@
 use libsyntax::{
     param::Param,
-    scanner::Scanner,
+    scanner::{Parse, Scanner},
 };
 
 #[test]

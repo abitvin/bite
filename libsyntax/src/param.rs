@@ -1,4 +1,4 @@
-use crate::{common::parse_two_ids, scanner::Scanner};
+use crate::{common::parse_two_ids, scanner::{Scanner, Parse}};
 
 #[derive(Debug, PartialEq)]
 pub struct Param {
@@ -13,8 +13,12 @@ impl Param {
             typ: String::from(typ),
         }
     }
+}
 
-    pub fn parse(scn: &mut Scanner) -> Option<Self> {
+impl Parse for Param {
+    type Item = Self;
+
+    fn parse(scn: &mut Scanner) -> Option<Self> {
         parse_two_ids(scn).map(|(id, typ)| Self { id, typ })
     }
 }

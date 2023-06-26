@@ -1,4 +1,4 @@
-use libsyntax::{scanner::Scanner, var_decl::VarDecl};
+use libsyntax::{scanner::{Parse, Scanner}, var_decl::VarDecl};
 
 #[test]
 fn var_decl() {
