@@ -1,0 +1,102 @@
+Vector: struct
+    x: i16
+    y: i16
+.
+
+Ball: struct
+    pos: Vector
+    vel: Vector
+.
+
+Ball.new: (x: i16, y: i16, vx: i16, vy: i16) -> Ball
+    return Ball {
+        pos: Vector { x, y }
+        vel: Vector { x: vx, y: vy }
+    }
+.
+
+draw: (buf: FrameBuf, ball: Ball)
+    buf.plot(ball.pos.x + 1, ball.pos.y)
+    buf.plot(ball.pos.x + 2, ball.pos.y)
+
+    buf.plot(ball.pos.x, ball.pos.y + 1)
+    buf.plot(ball.pos.x + 1, ball.pos.y + 1)
+    buf.plot(ball.pos.x + 2, ball.pos.y + 1)
+    buf.plot(ball.pos.x + 3, ball.pos.y + 1)
+
+    buf.plot(ball.pos.x, ball.pos.y + 2)
+    buf.plot(ball.pos.x + 1, ball.pos.y + 2)
+    buf.plot(ball.pos.x + 2, ball.pos.y + 2)
+    buf.plot(ball.pos.x + 3, ball.pos.y + 2)
+
+    buf.plot(ball.pos.x + 1, ball.pos.y + 3)
+    buf.plot(ball.pos.x + 2, ball.pos.y + 3)
+.
+
+update: (ball: Ball) -> void
+    ball.vel.x += ball.vel.vx
+    ball.vel.y += ball.vel.vy
+
+    if ball.vel.x < 1
+        ball.vel.vx = 1
+    elif ball.vel.x > 395
+        ball.vel.vx = -1
+    .
+
+    if ball.vel.y < 1
+        ball.vel.vy = 1
+    elif ball.vel.y > 395
+        ball.vel.vy = -1
+    .
+.
+
+HorWall: struct
+    x0: i16
+    x1: i16
+    y: i16
+.
+
+draw: (buf: FrameBuf, wall: HorWall) -> void
+    for x: wall.x0..wall.x1
+        buf.plot(x, wall.y)
+    .
+.
+
+VerWall: struct
+    x: i16
+    y0: i16
+    y1: i16
+.
+
+draw: (buf: FrameBuf, wall: VerWall) -> void
+    for y: wall.y0..wall.y1
+        buf.plot(wall.x, y)
+    .
+.
+
+main: () -> void
+    ball = Ball { 100, 100 }
+    hwall0 = HorWall { 50, 349, 50 }
+    hwall1 = HorWall { 50, 349, 349 }
+    vwall0 = VerWall { 50, 50, 349 }
+    vwall1 = VerWall { 349, 50, 349 }
+
+    buf = FrameBuf.new(400, 400)
+
+    loop
+        ball.update()
+
+        buf.clear()
+        buf.draw(ball)
+        buf.draw(hwall0)
+        buf.draw(hwall1)
+        buf.draw(vwall0)
+        buf.draw(vwall1)
+
+        Window.update(buf)
+
+        if Kb.esc_is_down()
+            break
+        .
+    .    
+.
