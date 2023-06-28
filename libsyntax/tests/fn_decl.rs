@@ -7,7 +7,16 @@ fn parse_fn() {
                       .";
 
     let mut scn = Scanner::new(code);
-    assert_eq!(FnDecl::parse(&mut scn), Some(FnDecl::new("main", vec![], "void", Block::default())));
+    assert_eq!(FnDecl::parse(&mut scn), Some(FnDecl::new(None, "main", vec![], "void", Block::default())));
+}
+
+#[test]
+fn parse_fn_witn_namespace() {
+    let code = "Cheese.new : () -> Cheese
+                      .";
+
+    let mut scn = Scanner::new(code);
+    assert_eq!(FnDecl::parse(&mut scn), Some(FnDecl::new(Some(String::from("Cheese")), "new", vec![], "Cheese", Block::default())));
 }
 
 #[test]
@@ -18,7 +27,7 @@ fn parse_fn_with_params() {
     let params = vec![Param::new("a", "i32"), Param::new("b", "i32")];
     
     let mut scn = Scanner::new(code);
-    assert_eq!(FnDecl::parse(&mut scn), Some(FnDecl::new("add", params, "i32", Block::default())));
+    assert_eq!(FnDecl::parse(&mut scn), Some(FnDecl::new(None, "add", params, "i32", Block::default())));
 }
 
 #[test]
@@ -35,5 +44,5 @@ fn parse_fn_with_var_decls() {
     ];
     
     let mut scn = Scanner::new(code);
-    assert_eq!(FnDecl::parse(&mut scn), Some(FnDecl::new("eat", params, "void", stmts)));
+    assert_eq!(FnDecl::parse(&mut scn), Some(FnDecl::new(None, "eat", params, "void", stmts)));
 }

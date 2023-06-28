@@ -5,7 +5,17 @@ impl Parse for FnDecl {
     type Item = Self;
 
     fn parse(scn: &mut Scanner) -> Option<Self> {
-        let id = parse_id(scn)?;
+        let mut ns = None;
+        let mut id = parse_id(scn)?;
+
+        let mut try_scn = scn.clone();
+
+        if try_scn.has(".") {
+            ns = Some(id);
+            id = parse_id(&mut try_scn)?;
+            scn.replace(try_scn);
+        }
+
         scn.skip_spaces();
         scn.scan(":")?;
         scn.skip_spaces();
@@ -20,7 +30,7 @@ impl Parse for FnDecl {
         scn.skip_spaces();
         scn.scan(".")?;
         
-        Some(Self::new(id, params, ret_type, block))
+        Some(Self::new(ns, id, params, ret_type, block))
     }
 }
 
