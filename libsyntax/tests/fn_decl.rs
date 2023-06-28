@@ -1,4 +1,4 @@
-use libast::{block::Block, fn_decl::FnDecl, param::Param, stmt::Stmt, var_decl::VarDecl};
+use libast::{block::Block, fn_decl::FnDecl, param::Param, stmt::Stmt};
 use libsyntax::scanner::{Parse, Scanner};
 
 #[test]

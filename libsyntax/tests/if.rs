@@ -1,4 +1,4 @@
-use libast::{r#if::If, stmt::Stmt, var_decl::VarDecl, block::Block};
+use libast::{block::Block, r#if::If, stmt::Stmt};
 use libsyntax::scanner::{Parse, Scanner};
 
 #[test]

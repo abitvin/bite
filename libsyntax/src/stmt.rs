@@ -7,14 +7,11 @@ impl Parse for Stmt {
 
     fn parse(scn: &mut Scanner) -> Option<Stmt> {
         if let Some(stmt) = parse_stmt(scn, |s| If::parse(s).map(Stmt::If)) {
-            return Some(stmt);
+            Some(stmt)
         }
-
-        if let Some(stmt) = parse_stmt(scn, |s| VarDecl::parse(s).map(Stmt::VarDecl)) {
-            return Some(stmt);
+        else {
+            parse_stmt(scn, |s| VarDecl::parse(s).map(Stmt::VarDecl))
         }
-        
-        return None;
     }
 }
 
@@ -23,8 +20,9 @@ fn parse_stmt(scn: &mut Scanner, f: impl Fn(&mut Scanner) -> Option<Stmt>) -> Op
 
     if let Some(stmt) = f(&mut try_scn) {
         scn.replace(try_scn);
-        return Some(stmt);
+        Some(stmt)
     }
-    
-    return None;
+    else {
+        None
+    }
 }
