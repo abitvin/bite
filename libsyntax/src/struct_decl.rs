@@ -1,7 +1,7 @@
 use crate::{common::parse_id, scanner::{Parse, Scanner}};
-use libast::{prop::Prop, r#struct::Struct};
+use libast::{prop::Prop, struct_decl::StructDecl};
 
-impl Parse for Struct {
+impl Parse for StructDecl {
     type Item = Self;
     
     fn parse(scn: &mut Scanner) -> Option<Self> {

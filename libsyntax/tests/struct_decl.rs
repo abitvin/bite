@@ -1,4 +1,4 @@
-use libast::{r#struct::Struct, prop::Prop};
+use libast::{struct_decl::StructDecl, prop::Prop};
 use libsyntax::scanner::{Parse, Scanner};
 
 #[test]
@@ -7,7 +7,7 @@ fn parse_empty_struct() {
                    .";
 
     let mut scn = Scanner::new(s);
-    assert_eq!(Struct::parse(&mut scn), Some(Struct::new("Cheese", vec![])))
+    assert_eq!(StructDecl::parse(&mut scn), Some(StructDecl::new("Cheese", vec![])))
 }
 
 #[test]
@@ -24,5 +24,5 @@ fn parse_struct_with_props() {
         Prop::new("c", "bool"),
     ];
     let mut scn = Scanner::new(s);
-    assert_eq!(Struct::parse(&mut scn), Some(Struct::new("Ham", props)))
+    assert_eq!(StructDecl::parse(&mut scn), Some(StructDecl::new("Ham", props)))
 }
