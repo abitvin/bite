@@ -20,7 +20,7 @@ impl<'a> Scanner<'a> {
     pub fn has(&mut self, value: &str) -> bool {
         let mut iter = self.code.clone();
         let chars = value.chars();
-        
+
         for c0 in chars {
             let c1 = iter.next();
 
@@ -58,12 +58,21 @@ impl<'a> Scanner<'a> {
     pub fn scan_digits(&mut self) -> Option<String> {
         let mut s = String::new();
         let mut chars = self.code.clone();
+        let mut steps = 0;
 
         loop {
             let c = chars.next();
 
             match c {
-                Some(c) if c.is_ascii_digit() => s += &String::from(c),
+                Some(c) => {
+                    if c.is_ascii_digit() {
+                        s += &String::from(c);
+                        steps += 1;
+                    }
+                    else {
+                        break;
+                    }
+                },
                 _ => break,
             }
         }
@@ -72,11 +81,14 @@ impl<'a> Scanner<'a> {
             return None;
         }
         
-        self.code = chars;
+        if steps > 0 {
+            self.code.nth(steps - 1);
+        }
+
         Some(s)
     }
 
-    pub fn skip(&mut self, char: char) -> bool {
+    pub fn skip_any(&mut self, char: char) -> bool {
         self.skip_when(|c| c == char)
     }
 
