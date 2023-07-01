@@ -40,6 +40,10 @@ pub fn parse_id(scn: &mut Scanner) -> Option<String> {
     Some(c)
 }
 
+pub fn parse_uint(scn: &mut Scanner) -> Option<String> {
+    scn.scan_digits()
+}
+
 pub fn parse_two_ids(scn: &mut Scanner) -> Option<(String, String)> {
     let id = parse_id(scn)?;
     scn.skip_spaces();
@@ -48,4 +52,16 @@ pub fn parse_two_ids(scn: &mut Scanner) -> Option<(String, String)> {
     let typ = parse_id(scn)?;
     
     Some((id, typ ))
+}
+
+pub fn try_parse<T>(scn: &mut Scanner, f: impl Fn(&mut Scanner) -> Option<T>) -> Option<T> {
+    let mut try_scn = scn.clone();
+
+    if let Some(x) = f(&mut try_scn) {
+        scn.replace(try_scn);
+        Some(x)
+    }
+    else {
+        None
+    }
 }
