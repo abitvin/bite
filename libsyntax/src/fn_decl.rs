@@ -46,7 +46,7 @@ fn parse_params(scn: &mut Scanner) -> Option<Vec<Param>> {
         loop {
             scn.skip_spaces();
             
-            if !scn.skip(',') {
+            if !scn.has(",") {
                 break;
             }
     

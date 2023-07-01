@@ -8,7 +8,7 @@ impl Parse for VarDecl {
         let id = parse_id(scn)?;
         scn.skip_spaces();
 
-        let typ = if scn.skip(':') {
+        let typ = if scn.has(":") {
             scn.skip_spaces();
             let typ = Some(parse_id(scn)?);
             scn.skip_spaces();
