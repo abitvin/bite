@@ -1,6 +1,6 @@
 use std::vec;
 
-use libast::{block::Block, expr::Expr, stmt::Stmt};
+use libast::{block::Block, expr::Expr, r#if::IfExpr, stmt::Stmt};
 use libsyntax::scanner::{Parse, Scanner};
 
 #[test]
@@ -19,11 +19,11 @@ fn parse_block() {
 
     let block = Block::new(vec![
         Stmt::new_var_decl("i", None, Expr::new_int_lit("10")),
-        Stmt::new_if((true, Block::default()), vec![], None),
+        Stmt::new_if((IfExpr::new_bool(true), Block::default()), vec![], None),
         Stmt::new_var_decl("j", None, Expr::new_int_lit("20")),
         Stmt::new_var_decl("k", None, Expr::new_int_lit("30")),
-        Stmt::new_if((true, Block::default()), vec![(false, Block::default())], None),
-        Stmt::new_if((false, Block::default()), vec![], Block::default()),
+        Stmt::new_if((IfExpr::new_bool(true), Block::default()), vec![(IfExpr::new_bool(false), Block::default())], None),
+        Stmt::new_if((IfExpr::new_bool(false), Block::default()), vec![], Block::default()),
     ]);
 
     let mut scn = Scanner::new(s);

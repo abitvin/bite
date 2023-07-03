@@ -1,4 +1,4 @@
-use crate::{block::Block, expr::Expr, r#if::If, var_decl::VarDecl};
+use crate::{block::Block, expr::Expr, r#if::{If, IfExpr}, var_decl::VarDecl};
 
 #[derive(Debug, PartialEq)]
 pub enum Stmt {
@@ -7,7 +7,7 @@ pub enum Stmt {
 }
 
 impl Stmt {
-    pub fn new_if(if_block: (bool, impl Into<Block>), elif_blocks: Vec<(bool, Block)>, else_block: impl Into<Option<Block>>) -> Self {
+    pub fn new_if(if_block: (IfExpr, impl Into<Block>), elif_blocks: Vec<(IfExpr, Block)>, else_block: impl Into<Option<Block>>) -> Self {
         Self::If(If::new(if_block, elif_blocks, else_block))
     }
 
