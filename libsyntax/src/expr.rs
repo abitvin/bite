@@ -1,11 +1,27 @@
-use libast::{bool_lit::BoolLit, expr::Expr, int_lit::IntLit};
-use crate::{common::try_parse, scanner::{Parse, Scanner}};
+use libast::expr::{BoolLit, Expr, IntLit};
+use crate::{common::{parse_bool, parse_int, try_parse}, scanner::{Parse, Scanner}};
 
 impl Parse for Expr {
     type Item = Self;
 
     fn parse(scn: &mut Scanner) -> Option<Self> {
         parse_sub(scn)
+    }
+}
+
+impl Parse for BoolLit {
+    type Item = Self;
+
+    fn parse(scn: &mut Scanner) -> Option<BoolLit> {
+        parse_bool(scn).map(|b| BoolLit::new(b))
+    }
+}
+
+impl Parse for IntLit {
+    type Item = Self;
+
+    fn parse(scn: &mut Scanner) -> Option<IntLit> {
+        parse_int(scn).map(|b| IntLit::new(b))
     }
 }
 

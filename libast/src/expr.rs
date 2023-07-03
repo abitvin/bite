@@ -1,6 +1,3 @@
-use crate::bool_lit::BoolLit;
-use crate::int_lit::IntLit;
-
 #[derive(Debug, PartialEq)]
 pub enum Expr {
     BoolLit(BoolLit),
@@ -61,6 +58,15 @@ impl Add {
 }
 
 #[derive(Debug, PartialEq)]
+pub struct BoolLit(bool);
+
+impl BoolLit {
+    pub fn new(val: bool) -> Self {
+        Self(val)
+    }
+}
+
+#[derive(Debug, PartialEq)]
 pub struct Div(Vec<Expr>);
 
 impl Div {
@@ -79,6 +85,15 @@ pub struct Group(Box<Expr>);
 impl Group {
     pub fn new(expr: impl Into<Box<Expr>>) -> Self {
         Self(expr.into())
+    }
+}
+
+#[derive(Debug, PartialEq)]
+pub struct IntLit(String);
+
+impl IntLit {
+    pub fn new(val: impl Into<String>) -> Self {
+        Self(val.into())
     }
 }
 
