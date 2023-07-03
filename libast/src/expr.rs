@@ -2,6 +2,7 @@
 pub enum Expr {
     BoolLit(BoolLit),
     IntLit(IntLit),
+    Var(Var),
     Add(Add),
     Div(Div),
     Group(Group),
@@ -41,6 +42,10 @@ impl Expr {
 
     pub fn new_int_lit(val: impl Into<String>) -> Expr {
         Expr::IntLit(IntLit::new(val.into()))
+    }
+
+    pub fn new_var(val: impl Into<String>) -> Expr {
+        Expr::Var(Var::new(val.into()))
     }
 }
 
@@ -129,5 +134,14 @@ impl Sub {
     
     pub fn ops(&self) -> &Vec<Expr> {
         &self.0
+    }
+}
+
+#[derive(Debug, PartialEq)]
+pub struct Var(String);
+
+impl Var {
+    pub fn new(val: impl Into<String>) -> Self {
+        Self(val.into())
     }
 }

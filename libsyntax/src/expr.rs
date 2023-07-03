@@ -1,5 +1,5 @@
-use libast::expr::{BoolLit, Expr, IntLit};
-use crate::{common::{parse_bool, parse_int, try_parse}, scanner::{Parse, Scanner}};
+use libast::expr::{BoolLit, Expr, IntLit, Var};
+use crate::{common::{parse_bool, parse_id, parse_int, try_parse}, scanner::{Parse, Scanner}};
 
 impl Parse for Expr {
     type Item = Self;
@@ -22,6 +22,14 @@ impl Parse for IntLit {
 
     fn parse(scn: &mut Scanner) -> Option<IntLit> {
         parse_int(scn).map(|b| IntLit::new(b))
+    }
+}
+
+impl Parse for Var {
+    type Item = Self;
+
+    fn parse(scn: &mut Scanner) -> Option<Var> {
+        parse_id(scn).map(|b| Var::new(b))
     }
 }
 
@@ -50,15 +58,10 @@ fn parse_add(scn: &mut Scanner) -> Option<Expr> {
 }
 
 fn parse_base(scn: &mut Scanner) -> Option<Expr> {
-    try_parse(scn, |s| {
-        BoolLit::parse(s).map(Expr::BoolLit)
-    })
-    .or_else(|| try_parse(scn, |s| {
-        IntLit::parse(s).map(Expr::IntLit)
-    }))
-    .or_else(|| try_parse(scn, |s| {
-        parse_maybe_neg(s)
-    }))
+    try_parse(scn, |s| BoolLit::parse(s).map(Expr::BoolLit))
+    .or_else(|| try_parse(scn, |s| IntLit::parse(s).map(Expr::IntLit)))
+    .or_else(|| try_parse(scn, |s| Var::parse(s).map(Expr::Var)))
+    .or_else(|| try_parse(scn, |s| parse_maybe_neg(s)))
 }
 
 fn parse_div(scn: &mut Scanner) -> Option<Expr> {

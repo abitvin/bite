@@ -1,4 +1,4 @@
-use libast::expr::{BoolLit, Expr, IntLit};
+use libast::expr::{BoolLit, Expr, IntLit, Var};
 use libsyntax::scanner::{Parse, Scanner};
 
 #[test]
@@ -20,6 +20,18 @@ fn parse_bool_error() {
     let s = "nope";
     let mut scn = Scanner::new(s);
     assert_eq!(BoolLit::parse(&mut scn), None);
+}
+
+#[test]
+fn parse_expr_with_vars() {
+    let expr = Expr::new_add(vec![
+        Expr::new_var("a"),
+        Expr::new_var("b"),
+        Expr::new_var("c"),
+    ]);
+    let s = "a + b + c";
+    let mut scn = Scanner::new(s);
+    assert_eq!(Expr::parse(&mut scn), Some(expr));
 }
 
 #[test]
@@ -151,4 +163,19 @@ fn parse_int_error() {
     let s = "nah";
     let mut scn = Scanner::new(s);
     assert_eq!(IntLit::parse(&mut scn), None);
+}
+
+#[test]
+fn parse_var() {
+    let s: &str = "monkey";
+    let mut scn = Scanner::new(s);
+    assert_eq!(Var::parse(&mut scn), Some(Var::new("monkey")));
+
+    let s: &str = "monkey123";
+    let mut scn = Scanner::new(s);
+    assert_eq!(Var::parse(&mut scn), Some(Var::new("monkey123")));
+
+    let s: &str = "123syntaxerror";
+    let mut scn = Scanner::new(s);
+    assert_eq!(Var::parse(&mut scn), None);
 }
