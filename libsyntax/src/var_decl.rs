@@ -1,5 +1,5 @@
-use crate::{scanner::{Parse, Scanner}, common::{parse_id, parse_int}};
-use libast::var_decl::VarDecl;
+use crate::{scanner::{Parse, Scanner}, common::parse_id};
+use libast::{var_decl::VarDecl, expr::Expr};
 
 impl Parse for VarDecl {
     type Item = Self;
@@ -18,9 +18,9 @@ impl Parse for VarDecl {
             None
         };
         
-        scn.scan("=");
+        scn.scan("=")?;
         scn.skip_spaces();
-        let expr = parse_int(scn)?;
+        let expr = Expr::parse(scn)?;
 
         Some(Self::new(id, typ, expr))
     }

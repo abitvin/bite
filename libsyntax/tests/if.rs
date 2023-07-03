@@ -1,4 +1,4 @@
-use libast::{block::Block, r#if::If, stmt::Stmt};
+use libast::{block::Block, expr::Expr, r#if::If, stmt::Stmt};
 use libsyntax::scanner::{Parse, Scanner};
 
 #[test]
@@ -19,8 +19,8 @@ fn parse_populated_if_block() {
     let mut scn = Scanner::new(s);
     
     let if_block = vec![
-        Stmt::new_var_decl("x", None, "1"),
-        Stmt::new_var_decl("y", None, "3")
+        Stmt::new_var_decl("x", None, Expr::new_int_lit("1")),
+        Stmt::new_var_decl("y", None, Expr::new_int_lit("3"))
     ];
     let iff = If::new((false, if_block), vec![], None);
 
@@ -45,7 +45,7 @@ fn parse_populated_elif_block() {
                    .";
     let mut scn = Scanner::new(s);
     let elif_blocks = vec![
-        (true, Block::new(vec![Stmt::new_var_decl("a", None, "567")]))
+        (true, Block::new(vec![Stmt::new_var_decl("a", None, Expr::new_int_lit("567"))]))
     ];
     let iff = If::new((true, vec![]), elif_blocks, None);
     assert_eq!(If::parse(&mut scn), Some(iff))
@@ -69,7 +69,7 @@ fn parse_populated_else_block() {
                         cheese = 100
                    .";
     let mut scn = Scanner::new(s);
-    let else_block = Block::new(vec![Stmt::new_var_decl("cheese", None, "100")]);
+    let else_block = Block::new(vec![Stmt::new_var_decl("cheese", None, Expr::new_int_lit("100"))]);
     let iff = If::new((true, vec![]), vec![], Some(else_block));
     assert_eq!(If::parse(&mut scn), Some(iff))
 }

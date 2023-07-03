@@ -1,4 +1,4 @@
-use libast::{block::Block, fn_decl::FnDecl, param::Param, stmt::Stmt};
+use libast::{block::Block, expr::Expr, fn_decl::FnDecl, param::Param, stmt::Stmt};
 use libsyntax::scanner::{Parse, Scanner};
 
 #[test]
@@ -39,8 +39,8 @@ fn parse_fn_with_var_decls() {
 
     let params = vec![Param::new("cheese", "Cheese")];
     let stmts = vec![
-        Stmt::new_var_decl("c", None, "123"),
-        Stmt::new_var_decl("d", None, "456")
+        Stmt::new_var_decl("c", None, Expr::new_int_lit("123")),
+        Stmt::new_var_decl("d", None, Expr::new_int_lit("456"))
     ];
     
     let mut scn = Scanner::new(code);
