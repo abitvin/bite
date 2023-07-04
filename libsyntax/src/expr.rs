@@ -29,7 +29,10 @@ impl Parse for Var {
     type Item = Self;
 
     fn parse(scn: &mut Scanner) -> Option<Var> {
-        parse_id(scn).map(Var::new)
+        let cur0 = scn.current_cursor();
+        let id = parse_id(scn)?;
+        let cur1 = scn.current_cursor();
+        Some(Var::new(id, cur0.span_to(cur1)))
     }
 }
 

@@ -1,3 +1,5 @@
+use crate::span::Span;
+
 #[derive(Debug, PartialEq)]
 pub enum Expr {
     BoolLit(BoolLit),
@@ -44,8 +46,8 @@ impl Expr {
         Expr::IntLit(IntLit::new(val.into()))
     }
 
-    pub fn new_var(val: impl Into<String>) -> Expr {
-        Expr::Var(Var::new(val.into()))
+    pub fn new_var(id: impl Into<String>, span: Span) -> Expr {
+        Expr::Var(Var::new(id, span))
     }
 }
 
@@ -138,10 +140,13 @@ impl Sub {
 }
 
 #[derive(Debug, PartialEq)]
-pub struct Var(String);
+pub struct Var {
+    id: String,
+    span: Span,
+}
 
 impl Var {
-    pub fn new(val: impl Into<String>) -> Self {
-        Self(val.into())
+    pub fn new(id: impl Into<String>, span: Span) -> Self {
+        Self { id: id.into(), span }
     }
 }

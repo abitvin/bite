@@ -1,4 +1,4 @@
-use libast::expr::{BoolLit, Expr, IntLit, Var};
+use libast::{expr::{BoolLit, Expr, IntLit, Var}, span::Span};
 use libsyntax::scanner::{Parse, Scanner};
 
 #[test]
@@ -25,9 +25,9 @@ fn parse_bool_error() {
 #[test]
 fn parse_expr_with_vars() {
     let expr = Expr::new_add(vec![
-        Expr::new_var("a"),
-        Expr::new_var("b"),
-        Expr::new_var("c"),
+        Expr::new_var("a", Span::new(0, 0, 0, 1)),
+        Expr::new_var("b", Span::new(4, 0, 4, 1)),
+        Expr::new_var("c", Span::new(8, 0, 8, 1)),
     ]);
     let s = "a + b + c";
     let mut scn = Scanner::new(s);
@@ -169,11 +169,11 @@ fn parse_int_error() {
 fn parse_var() {
     let s: &str = "monkey";
     let mut scn = Scanner::new(s);
-    assert_eq!(Var::parse(&mut scn), Some(Var::new("monkey")));
+    assert_eq!(Var::parse(&mut scn), Some(Var::new("monkey", Span::new(0, 0, 0, 6))));
 
     let s: &str = "monkey123";
     let mut scn = Scanner::new(s);
-    assert_eq!(Var::parse(&mut scn), Some(Var::new("monkey123")));
+    assert_eq!(Var::parse(&mut scn), Some(Var::new("monkey123", Span::new(0, 0, 0, 9))));
 
     let s: &str = "123syntaxerror";
     let mut scn = Scanner::new(s);

@@ -1,3 +1,4 @@
+use libast::span::Cursor;
 use crate::code_iter::CodeIter;
 
 pub trait Parse {
@@ -15,6 +16,10 @@ impl<'a> Scanner<'a> {
         Self {
             code: CodeIter::new(code)
         }
+    }
+
+    pub fn current_cursor(&self) -> Cursor {
+        self.code.current_cursor()
     }
 
     pub fn has(&mut self, value: &str) -> bool {
