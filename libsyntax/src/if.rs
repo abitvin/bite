@@ -1,4 +1,4 @@
-use crate::{common::{parse_bool, parse_id, parse_int, try_parse}, scanner::{Parse, Scanner}};
+use crate::{common::{parse_bool, parse_id, try_parse}, scanner::{Parse, Scanner}};
 use libast::{block::Block, r#if::{If, IfExpr, IfOperand, IfOperator}};
 
 impl Parse for If {

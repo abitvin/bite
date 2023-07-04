@@ -13,7 +13,7 @@ impl Parse for BoolLit {
     type Item = Self;
 
     fn parse(scn: &mut Scanner) -> Option<BoolLit> {
-        parse_bool(scn).map(|b| BoolLit::new(b))
+        parse_bool(scn).map(BoolLit::new)
     }
 }
 
@@ -21,7 +21,7 @@ impl Parse for IntLit {
     type Item = Self;
 
     fn parse(scn: &mut Scanner) -> Option<IntLit> {
-        parse_int(scn).map(|b| IntLit::new(b))
+        parse_int(scn).map(IntLit::new)
     }
 }
 
@@ -29,7 +29,7 @@ impl Parse for Var {
     type Item = Self;
 
     fn parse(scn: &mut Scanner) -> Option<Var> {
-        parse_id(scn).map(|b| Var::new(b))
+        parse_id(scn).map(Var::new)
     }
 }
 
@@ -61,7 +61,7 @@ fn parse_base(scn: &mut Scanner) -> Option<Expr> {
     try_parse(scn, |s| BoolLit::parse(s).map(Expr::BoolLit))
     .or_else(|| try_parse(scn, |s| IntLit::parse(s).map(Expr::IntLit)))
     .or_else(|| try_parse(scn, |s| Var::parse(s).map(Expr::Var)))
-    .or_else(|| try_parse(scn, |s| parse_maybe_neg(s)))
+    .or_else(|| try_parse(scn, parse_maybe_neg))
 }
 
 fn parse_div(scn: &mut Scanner) -> Option<Expr> {
