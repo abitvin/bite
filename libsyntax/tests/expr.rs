@@ -1,4 +1,6 @@
-use libast::{expr::{BoolLit, Expr, IntLit, Var}, span::Span};
+use std::vec;
+
+use libast::{expr::{BoolLit, Expr, IntLit, Var, StructLit, StructLitArg}, span::Span};
 use libsyntax::scanner::{Parse, Scanner};
 
 #[test]
@@ -163,6 +165,62 @@ fn parse_int_error() {
     let s = "nah";
     let mut scn = Scanner::new(s);
     assert_eq!(IntLit::parse(&mut scn), None);
+}
+
+#[test]
+fn parse_struct_anonymous_empty() {
+    let s = "{}";
+    let mut scn = Scanner::new(s);
+    assert_eq!(StructLit::parse(&mut scn), Some(StructLit::default()));
+}
+
+#[test]
+fn parse_struct_named_empty() {
+    let s = "Monkey {}";
+    let mut scn = Scanner::new(s);
+    assert_eq!(StructLit::parse(&mut scn), Some(StructLit::new_named("Monkey", vec![])));
+}
+
+#[test]
+fn parse_struct_property_value_shorthand() {
+    let s = "Monkey { a , b , c }";
+    let mut scn = Scanner::new(s);
+    assert_eq!(StructLit::parse(&mut scn), Some(StructLit::new_named("Monkey", vec![
+        StructLitArg::new_shorthand("a"),
+        StructLitArg::new_shorthand("b"),
+        StructLitArg::new_shorthand("c"),
+    ])));
+
+    let s = "BananaWithExtraComma { a , b , }";
+    let mut scn = Scanner::new(s);
+    assert_eq!(StructLit::parse(&mut scn), Some(StructLit::new_named("BananaWithExtraComma", vec![
+        StructLitArg::new_shorthand("a"),
+        StructLitArg::new_shorthand("b"),
+    ])));
+}
+
+#[test]
+fn parse_struct_with_property_values() {
+    let s = "Monkey { a : 100 , b : 5 * 7 , c : true, d : {}, e : Vec { x, y, z } }";
+    let mut scn = Scanner::new(s);
+    assert_eq!(StructLit::parse(&mut scn), Some(StructLit::new_named("Monkey", vec![
+        StructLitArg::new("a", Expr::new_int_lit("100")),
+        StructLitArg::new("b", Expr::new_mul(vec![Expr::new_int_lit("5"), Expr::new_int_lit("7")])),
+        StructLitArg::new("c", Expr::new_bool_lit(true)),
+        StructLitArg::new("d", Expr::new_struct_anon_lit(vec![])),
+        StructLitArg::new("e", Expr::new_struct_lit("Vec", vec![
+            StructLitArg::new_shorthand("x"),
+            StructLitArg::new_shorthand("y"),
+            StructLitArg::new_shorthand("z"),
+        ])),
+    ])));
+
+    let s = "BananaWithExtraComma { a : 100 , b : 5 * 7 , }";
+    let mut scn = Scanner::new(s);
+    assert_eq!(StructLit::parse(&mut scn), Some(StructLit::new_named("BananaWithExtraComma", vec![
+        StructLitArg::new("a", Expr::new_int_lit("100")),
+        StructLitArg::new("b", Expr::new_mul(vec![Expr::new_int_lit("5"), Expr::new_int_lit("7")])),
+    ])));
 }
 
 #[test]

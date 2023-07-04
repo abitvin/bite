@@ -1,4 +1,6 @@
-use libast::expr::{BoolLit, Expr, IntLit, Var};
+use std::vec;
+
+use libast::expr::{BoolLit, Expr, IntLit, StructLit, Var, StructLitArg};
 use crate::{common::{parse_bool, parse_id, parse_int, try_parse}, scanner::{Parse, Scanner}};
 
 impl Parse for Expr {
@@ -12,7 +14,7 @@ impl Parse for Expr {
 impl Parse for BoolLit {
     type Item = Self;
 
-    fn parse(scn: &mut Scanner) -> Option<BoolLit> {
+    fn parse(scn: &mut Scanner) -> Option<Self> {
         parse_bool(scn).map(BoolLit::new)
     }
 }
@@ -20,8 +22,64 @@ impl Parse for BoolLit {
 impl Parse for IntLit {
     type Item = Self;
 
-    fn parse(scn: &mut Scanner) -> Option<IntLit> {
+    fn parse(scn: &mut Scanner) -> Option<Self> {
         parse_int(scn).map(IntLit::new)
+    }
+}
+
+impl Parse for StructLit {
+    type Item = Self;
+
+    fn parse(scn: &mut Scanner) -> Option<Self> {
+        let id = parse_id(scn);
+        scn.skip_spaces();
+        scn.scan("{")?;
+        scn.skip_whitespaces();
+        
+        if scn.has("}") {
+            return Some(StructLit::new(id, vec![]));
+        }
+
+        let mut args = vec![];
+
+        loop {
+            let arg = StructLitArg::parse(scn)?;
+            args.push(arg);
+
+            scn.skip_whitespaces();
+            
+            if scn.has(",") {
+                scn.skip_whitespaces();
+
+                if scn.has("}") {
+                    break;    
+                }
+
+                continue;
+            }           
+            else if scn.has("}") {
+                break;    
+            }
+        }
+
+        Some(StructLit::new(id, args))
+    }
+}
+
+impl Parse for StructLitArg {
+    type Item = Self;
+
+    fn parse(scn: &mut Scanner) -> Option<Self> {
+        let id = parse_id(scn)?;
+        scn.skip_spaces();
+        let mut expr = None;
+        
+        if scn.has(":") {
+            scn.skip_spaces();
+            expr = Expr::parse(scn);
+        }
+
+        Some(StructLitArg::new(id, expr))
     }
 }
 
@@ -63,6 +121,7 @@ fn parse_add(scn: &mut Scanner) -> Option<Expr> {
 fn parse_base(scn: &mut Scanner) -> Option<Expr> {
     try_parse(scn, |s| BoolLit::parse(s).map(Expr::BoolLit))
     .or_else(|| try_parse(scn, |s| IntLit::parse(s).map(Expr::IntLit)))
+    .or_else(|| try_parse(scn, |s| StructLit::parse(s).map(Expr::StructLit)))
     .or_else(|| try_parse(scn, |s| Var::parse(s).map(Expr::Var)))
     .or_else(|| try_parse(scn, parse_maybe_neg))
 }

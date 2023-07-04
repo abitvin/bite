@@ -4,6 +4,7 @@ use crate::span::Span;
 pub enum Expr {
     BoolLit(BoolLit),
     IntLit(IntLit),
+    StructLit(StructLit),
     Var(Var),
     Add(Add),
     Div(Div),
@@ -44,6 +45,14 @@ impl Expr {
 
     pub fn new_int_lit(val: impl Into<String>) -> Expr {
         Expr::IntLit(IntLit::new(val.into()))
+    }
+
+    pub fn new_struct_lit(id: impl Into<String>, args: Vec<StructLitArg>) -> Expr {
+        Expr::StructLit(StructLit::new_named(id, args))
+    }
+
+    pub fn new_struct_anon_lit(args: Vec<StructLitArg>) -> Expr {
+        Expr::StructLit(StructLit::new_anon(args))
     }
 
     pub fn new_var(id: impl Into<String>, span: Span) -> Expr {
@@ -123,6 +132,48 @@ pub struct Neg(Box<Expr>);
 impl Neg {
     pub fn new(expr: impl Into<Box<Expr>>) -> Self {
         Self(expr.into())
+    }
+}
+
+#[derive(Debug, PartialEq)]
+pub struct StructLit {
+    id: Option<String>,
+    args: Vec<StructLitArg>,
+}
+
+impl StructLit {
+    pub fn new(id: Option<String>, args: Vec<StructLitArg>) -> Self {
+        Self { id, args }
+    }
+
+    pub fn new_named(id: impl Into<String>, args: Vec<StructLitArg>) -> Self {
+        Self { id: Some(id.into()), args }
+    }
+
+    pub fn new_anon(args: Vec<StructLitArg>) -> Self {
+        Self { id: None, args }
+    }
+}
+
+impl Default for StructLit {
+    fn default() -> Self {
+        Self { id: None, args: vec![] }
+    }
+}
+
+#[derive(Debug, PartialEq)]
+pub struct StructLitArg {
+    id: String,
+    expr: Option<Expr>,
+}
+
+impl StructLitArg {
+    pub fn new(id: impl Into<String>, expr: impl Into<Option<Expr>>) -> Self {
+        Self { id: id.into(), expr: expr.into() }
+    }
+
+    pub fn new_shorthand(id: impl Into<String>) -> Self {
+        Self { id: id.into(), expr: None }
     }
 }
 
