@@ -1,4 +1,4 @@
-use std::str::Chars;
+use crate::code_iter::CodeIter;
 
 pub trait Parse {
     type Item;
@@ -7,13 +7,13 @@ pub trait Parse {
 
 #[derive(Clone)]
 pub struct Scanner<'a> {
-    code: Chars<'a>,
+    code: CodeIter<'a>,
 }
 
 impl<'a> Scanner<'a> {
     pub fn new(code: &'a str) -> Self {
         Self {
-            code: code.chars()
+            code: CodeIter::new(code)
         }
     }
 
